@@ -3,10 +3,10 @@
 ## TO-DO
 ### Montador
 #### Pré-processamento
-- [ ] Tratar a entrada
-  - [ ] Tirar espaços em brancos e comentarios
-  - [ ] Deixar tudo maiúsculo 
-  - [ ] Deixar as labels em uma linha (facilita o processo de tradução depois), exemplo:
+- [x] Tratar a entrada
+  - [x] Tirar espaços em brancos e comentarios
+  - [x] Deixar tudo maiúsculo 
+  - [x] Deixar as labels em uma linha (facilita o processo de tradução depois), exemplo:
   ```
   A1:
   COPY N1, N4
