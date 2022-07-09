@@ -6,7 +6,7 @@
 using namespace std;
 
 /**
- * Trata a entrada tirando espacos e tabulacoes desnecessarias, colocando tudo para maisculo e removendo os comentarios.
+ *  Trata a entrada tirando espacos e tabulacoes desnecessarias, colocando tudo para maisculo e removendo os comentarios.
 
     @param uma matriz de strings.
     @return uma matriz de strings representando a entrada ja tratada.
@@ -16,7 +16,6 @@ vector<vector<string>> trataEntrada(string entrada){
     string str;
     vector<vector<string>> programaTratado;
     vector<string> linha;
-    bool ehlabelSoFlag = false;
     while (getline(file, str)) {
         istringstream iss(str);
         string token;
@@ -34,17 +33,59 @@ vector<vector<string>> trataEntrada(string entrada){
         }
         
         if (ehLabelSo(linha)){
-            ehlabelSoFlag = true;
+            continue;
         } else if (linha.size()){
             programaTratado.push_back(linha);
             linha.clear();
-            ehlabelSoFlag = false;
         }
     }
     return programaTratado;
 }
 
-bool preProcessamento(string entrada){
+/**
+ *  Faz o pre-processamento do programa, tratando a entrada e pre-processando as diretivas EQU e IF.
+
+    @param duas strings representando a entrada e o nome do arquivo de saida.
+    @return verdadeiro se o pre-processou com sucesso, falso se nao.
+*/
+bool preProcessamento(string entrada, string saida){
+    ofstream arquivo_de_saida;
+    arquivo_de_saida.open(saida);
+    if (!arquivo_de_saida){
+        cout << "erro: arquivo de saida não pode ser criado\n";
+        arquivo_de_saida.close();
+        return false;
+    }
     vector<vector<string>> programa = trataEntrada(entrada);
-    exibePrograma(programa);
+    //exibePrograma(programa);
+    map<string,int> tabelaEQU;
+    
+    for (unsigned int linha = 0; linha < programa.size(); linha++){
+
+        if (ehLabel(programa[linha][0]) && programa[linha][1] == "EQU"){
+            string label = cortaUltimoCaractere(programa[linha][0]);
+            string valor = programa[linha][2];
+            tabelaEQU.insert({label, atoi(valor.c_str())});
+        }
+        
+        if (programa[linha][0] == "IF"){
+            if (tabelaEQU[programa[linha][1]] > 0){
+                linha++;
+            } else {
+                linha += 2;
+            }
+        }
+        
+        bool ehIf = programa[linha][0] == "IF";
+        bool ehEqu = programa[linha].size() > 1 && programa[linha][1] == "EQU";
+        
+        if (!ehIf && !ehEqu){
+            for (unsigned int i = 0; i < programa[linha].size(); i++){
+            arquivo_de_saida << programa[linha][i] << " ";
+            }
+            arquivo_de_saida << "\n";
+        }
+    }
+    arquivo_de_saida.close();
+    return true;
 }

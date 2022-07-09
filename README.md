@@ -15,7 +15,8 @@
 
   A1: COPY N1, N4
   ```
-- [ ] Pré-processar as diretivas EQU e IF
+- [x] Pré-processar as diretivas EQU e IF
+- [ ] Testar com mais casos de testes
 #### Tradução 
 - [ ] Escolher o algoritmo: uma passagem ou duas passagens
 - [ ] Tratamento de erros:

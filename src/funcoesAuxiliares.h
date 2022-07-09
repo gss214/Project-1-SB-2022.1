@@ -79,7 +79,7 @@ void exibePrograma(vector<vector<string>> programa){
     @return uma string com seus caracteres em maisculo.
 */
 string transformaMaisculo(string s){
-    for(int i = 0; i < s.length(); i++){
+    for(unsigned int i = 0; i < s.length(); i++){
         s[i] = toupper(s[i]);
     }
     return s;
@@ -93,4 +93,36 @@ string transformaMaisculo(string s){
 */
 bool ehLabelSo(vector<string> linha){
     return linha.size() == 1 && linha[0][linha[0].length()-1] == ':';
+}
+
+/**
+    Converte um numero em hexa para inteiro.
+
+    @param uma string correspondente ao numero em hexa, e.g: 0xfffefffe.
+    @return o numero em hexa convertido para inteiro.
+*/
+int hexToInt(string hex){
+    return stoul(hex, nullptr, 16);
+}
+
+
+/**
+    Corta o ultimo caractere de uma string.
+
+    @param uma string. 
+    @return a string de entrada com o ultimo caractere cortado.
+*/
+string cortaUltimoCaractere(string token){
+    return token.substr(0, token.size()-1);
+}
+
+
+/**
+    Verifica se um token eh uma label.
+
+    @param uma string correspondente ao token.
+    @return verdadeiro se eh uma label, falso se nao.
+*/
+bool ehLabel(string token){
+    return token[token.size()-1] == ':';
 }

@@ -11,7 +11,7 @@ int main(int argc, char *argv[]){
     string saida = argv[3];
     
     if (argv1 == "-p"){
-        preProcessamento(entrada);
+        preProcessamento(entrada, saida);
     } else{
        printf("traduzir\n");
     }
