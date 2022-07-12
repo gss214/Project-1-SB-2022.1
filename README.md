@@ -18,7 +18,7 @@
 - [x] Pré-processar as diretivas EQU e IF
 - [ ] Testar com mais casos de testes
 #### Tradução 
-- [ ] Escolher o algoritmo: uma passagem ou duas passagens
+- [x] Escolher o algoritmo: uma passagem ou duas passagens
 - [ ] Tratamento de erros:
   - [ ] Verificar nomes de variáveis e rótulos (não podem começar com números ou ter caracteres especiais)
   - [ ] Declarações de rótulos ausentes
@@ -30,7 +30,7 @@
   - [ ] Falta de seção de texto
 - [ ] Traduzir e gerar o código objeto
   - [x] Criar funções auxiliares para ajudar no processo de tradução
-  - [ ] Aplicar o algoritmo de uma ou duas passagens
+  - [ ] Aplicar o algoritmo de duas passagens
 ### Ligador
 
 - [ ] Alinhar os códigos (o primeiro código objeto a ser passado na linha de comando é a main)

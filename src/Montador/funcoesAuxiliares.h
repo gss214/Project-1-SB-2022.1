@@ -9,7 +9,7 @@ vector<string> diretivas = {"BEGIN", "CONST", "END", "EQU", "EXTERN", "IF", "PUB
 
 /**
     Retorna se um token eh uma diretiva valida ou nao.
-    @param uma string correspondente ao token a ser verificado.
+    @param token uma string correspondente ao token a ser verificado.
     @return verdadeiro se eh uma diretiva valida, falso se nao.
 */
 bool verificaDiretivas(string token){
@@ -23,7 +23,7 @@ bool verificaDiretivas(string token){
 
 /**
     Verifica se um token eh uma instrucao valida ou nao.
-    @param uma string correspondente ao token a ser verificado.
+    @param token uma string correspondente ao token a ser verificado.
     @return um inteiro (opcode), se entre 1 e 14 eh uma instucao valida, caso 0 nao.
 */
 int verificaOpcode(string token){
@@ -32,7 +32,7 @@ int verificaOpcode(string token){
 
 /**
     Retorna o tamanho de uma instrucao.
-    @param uma string correspondente a instrucao.
+    @param instrucao uma string correspondente a instrucao.
     @return um inteiro
 */
 int tamanhoDaInstrucao(string instrucao){
@@ -47,7 +47,7 @@ int tamanhoDaInstrucao(string instrucao){
 
 /**
     Retorna o numero de operandos de uma instrucao.
-    @param uma string correspondente a instrucao.
+    @param instrucao uma string correspondente a instrucao.
     @return um inteiro
 */
 int verificaOperando(string instrucao){
@@ -62,7 +62,7 @@ int verificaOperando(string instrucao){
 
 /**
     Exibe na tela uma matriz.
-    @param uma matriz de string.
+    @param programa uma matriz de string.
 */
 void exibePrograma(vector<vector<string>> programa){
     for (auto i: programa){
@@ -75,7 +75,7 @@ void exibePrograma(vector<vector<string>> programa){
 
 /**
     Transforma os caracteres de uma string para maiusculo.
-    @param uma string.
+    @param s uma string.
     @return uma string com seus caracteres em maisculo.
 */
 string transformaMaisculo(string s){
@@ -88,7 +88,7 @@ string transformaMaisculo(string s){
 /**
     Verifica se uma linha eh so uma declaracao de uma label.
 
-    @param um vetor de strings.
+    @param linha um vetor de strings.
     @return verdadeiro se tem uma label declarada, falso se nao.
 */
 bool ehLabelSo(vector<string> linha){
@@ -98,7 +98,7 @@ bool ehLabelSo(vector<string> linha){
 /**
     Converte um numero em hexa para inteiro.
 
-    @param uma string correspondente ao numero em hexa, e.g: 0xfffefffe.
+    @param hex uma string correspondente ao numero em hexa, e.g: 0xfffefffe.
     @return o numero em hexa convertido para inteiro.
 */
 int hexToInt(string hex){
@@ -109,7 +109,7 @@ int hexToInt(string hex){
 /**
     Corta o ultimo caractere de uma string.
 
-    @param uma string. 
+    @param token uma string correspondente ao token. 
     @return a string de entrada com o ultimo caractere cortado.
 */
 string cortaUltimoCaractere(string token){
@@ -120,9 +120,33 @@ string cortaUltimoCaractere(string token){
 /**
     Verifica se um token eh uma label.
 
-    @param uma string correspondente ao token.
+    @param token uma string correspondente ao token.
     @return verdadeiro se eh uma label, falso se nao.
 */
 bool ehLabel(string token){
     return token[token.size()-1] == ':';
+}
+
+/**
+    Le um programa e retorna ele em uma matriz de strings.
+
+    @param caminho string contendo o caminho do arquivo de entrada.
+    @return uma matriz de strings representando o programa.
+*/
+vector<vector<string>> lerArquivo(string caminho){
+    ifstream file(caminho);
+    string str;
+    vector<vector<string>> programa;
+    vector<string> linha;
+    while (getline(file, str)) {
+        istringstream iss(str);
+        string token;
+        while (getline(iss, token, ' ')){
+            token = token.c_str();
+            linha.push_back(token);
+        }
+        programa.push_back(linha);
+        linha.clear();
+    }
+    return programa;
 }

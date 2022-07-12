@@ -1,7 +1,9 @@
 #include <bits/stdc++.h>
 #include <fstream>
 
+#include "funcoesAuxiliares.h"
 #include "preProcessamento.h"
+#include "tradutor.h"
 
 using namespace std;
 
@@ -13,7 +15,7 @@ int main(int argc, char *argv[]){
     if (argv1 == "-p"){
         preProcessamento(entrada, saida);
     } else{
-       printf("traduzir\n");
+        algoritmoDuasPassagens(entrada, saida);
     }
     
     return 0;
