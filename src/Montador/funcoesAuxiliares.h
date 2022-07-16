@@ -5,7 +5,38 @@ using namespace std;
 
 map<string,int> opcodes = {{"ADD", 1}, {"SUB", 2}, {"MULT", 3}, {"DIV", 4}, {"JMP", 5}, {"JMPN", 6}, {"JMPP", 7}, {"JMPZ", 8}, {"COPY", 9}, {"LOAD", 10}, {"STORE", 11}, {"INPUT", 12}, {"OUTPUT", 13}, {"STOP", 14}};
 
-vector<string> diretivas = {"BEGIN", "CONST", "END", "EQU", "EXTERN", "IF", "PUBLIC"};
+vector<string> diretivas = {"BEGIN", "CONST", "END", "EQU", "EXTERN", "IF", "PUBLIC", "SPACE"};
+
+/**
+    Retorna se um token eh uma diretiva valida ou nao.
+    @param token uma string correspondente ao token a ser verificado.
+    @return verdadeiro se eh uma diretiva valida, falso se nao.
+*/
+void tratamentoErro(int tipo, int linha=0){
+    
+    switch (tipo){
+
+    case 1:
+        printf("Erro na linha: %d -- Símbolo redefinido (Erro Semântico)\n", linha);
+        break;
+    case 2:
+        printf("Erro na linha: %d -- Operação não identificada (Erro Semântico)\n", linha);
+        break;
+    case 3:
+        printf("Erro na linha: %d -- Mais de um rótulo na mesma linha (Erro Semântico)\n", linha);
+        break;
+    case 4:
+        printf("Seção de Texto não definida (Erro Semântico)\n");
+        break;
+    case 5:
+        printf("Erro na linha: %d -- Intrução ou diretiva na seção errada (Erro Semântico)\n", linha);
+        break;    
+    default:
+        printf("Erro na linha: %d -- Tipo de erro não reconhecido\n", linha);
+        break;
+    }
+
+}
 
 /**
     Retorna se um token eh uma diretiva valida ou nao.
@@ -38,10 +69,21 @@ int verificaOpcode(string token){
 int tamanhoDaInstrucao(string instrucao){
     if (instrucao == "COPY"){
         return 3;
-    } else if (instrucao == "SPACE" || instrucao == "CONST"){
-        return 1;
     } else {
         return 2;
+    }
+}
+
+/**
+    Retorna o tamanho de uma diretiva.
+    @param diretiva uma string correspondente a diretiva.
+    @return um inteiro
+*/
+int tamanhoDaDiretiva(string diretiva){
+    if (diretiva == "SPACE" || diretiva == "CONST"){
+        return 1;
+    } else {
+        return 0;
     }
 }
 

@@ -22,12 +22,12 @@
 - [ ] Tratamento de erros:
   - [ ] Verificar nomes de variáveis e rótulos (não podem começar com números ou ter caracteres especiais)
   - [ ] Declarações de rótulos ausentes
-  - [ ] Declarações ou rótulos repetidos
+  - [x] Declarações ou rótulos repetidos
   - [ ] Instruções com a quantidade de operando errado
-  - [ ] Tokens inválidos
-  - [ ] Dois rótulos na mesma linha
-  - [ ] Instruções ou diretivas nas seções erradas
-  - [ ] Falta de seção de texto
+  - [x] Tokens inválidos
+  - [x] Dois rótulos na mesma linha
+  - [x] Instruções ou diretivas nas seções erradas
+  - [x] Falta de seção de texto
 - [ ] Traduzir e gerar o código objeto
   - [x] Criar funções auxiliares para ajudar no processo de tradução
   - [ ] Aplicar o algoritmo de duas passagens
