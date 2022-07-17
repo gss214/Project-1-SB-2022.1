@@ -21,16 +21,19 @@
 - [x] Escolher o algoritmo: uma passagem ou duas passagens
 - [ ] Tratamento de erros:
   - [ ] Verificar nomes de variáveis e rótulos (não podem começar com números ou ter caracteres especiais)
-  - [ ] Declarações de rótulos ausentes
+  - [x] Declarações de rótulos ausentes
   - [x] Declarações ou rótulos repetidos
-  - [ ] Instruções com a quantidade de operando errado
+  - [x] Instruções com a quantidade de operando errado
   - [x] Tokens inválidos
   - [x] Dois rótulos na mesma linha
   - [x] Instruções ou diretivas nas seções erradas
   - [x] Falta de seção de texto
 - [ ] Traduzir e gerar o código objeto
   - [x] Criar funções auxiliares para ajudar no processo de tradução
-  - [ ] Aplicar o algoritmo de duas passagens
+  - [x] Aplicar o algoritmo de duas passagens
+  - [x] Aceitar hexadecimal no const
+  - [ ] Gerar arquivo objeto com as tabelas de definições e uso
+  - [ ] Tratar as diretivas BEGIN e END
 ### Ligador
 
 - [ ] Alinhar os códigos (o primeiro código objeto a ser passado na linha de comando é a main)

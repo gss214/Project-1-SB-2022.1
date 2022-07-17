@@ -14,6 +14,7 @@ vector<vector<string>> trataEntrada(string entrada){
     string str;
     vector<vector<string>> programaTratado;
     vector<string> linha;
+
     while (getline(file, str)) {
         istringstream iss(str);
         string token;
@@ -29,8 +30,7 @@ vector<vector<string>> trataEntrada(string entrada){
                 linha.push_back(token);
             }
         }
-        
-        if (ehLabelSo(linha)){
+        if (ehLabelSo(linha) || linha.back()[linha.back().size()-1] == ':'){
             continue;
         } else if (linha.size()){
             programaTratado.push_back(linha);
@@ -53,13 +53,17 @@ bool preProcessamento(string entrada, string saida){
     int linha = 0;
 
     while(linha < (int)programa.size()){
-        bool _ehLabel = ehLabel(programa[linha][0]);
+        string token = programa[linha][0];
+        bool _ehLabel = ehLabel(token);
         if (_ehLabel && programa[linha][1] == "EQU"){
-            string label = cortaUltimoCaractere(programa[linha][0]);
+            string label = cortaUltimoCaractere(token);
             string valor = programa[linha][2];
             tabelaEQU.insert({label, atoi(valor.c_str())});
             programa.erase(programa.begin() + linha);
-        } else if (programa[linha][0] == "IF"){
+        } else if (token == "COPY"){
+            programa[linha][1] = cortaUltimoCaractere(programa[linha][1]);
+            linha++;
+        } else if (token == "IF"){
             if (tabelaEQU[programa[linha][1]] > 0){
                 programa.erase(programa.begin() + linha);
             } else {

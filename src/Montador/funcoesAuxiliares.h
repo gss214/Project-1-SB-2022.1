@@ -12,7 +12,7 @@ vector<string> diretivas = {"BEGIN", "CONST", "END", "EQU", "EXTERN", "IF", "PUB
     @param token uma string correspondente ao token a ser verificado.
     @return verdadeiro se eh uma diretiva valida, falso se nao.
 */
-void tratamentoErro(int tipo, int linha=0){
+bool tratamentoErro(int tipo, int linha=0){
     
     switch (tipo){
 
@@ -30,12 +30,22 @@ void tratamentoErro(int tipo, int linha=0){
         break;
     case 5:
         printf("Erro na linha: %d -- Intrução ou diretiva na seção errada (Erro Semântico)\n", linha);
+        break;
+    case 6:
+        printf("Erro na linha: %d -- Instruções com a quantidade de operandos errados (Erro Sintático)\n", linha);
+        break; 
+    case 7:
+        printf("Erro na linha: %d -- Declaração de rótulo ausente (Erro Semântico)\n", linha);
+        break;
+    case 8:
+        printf("Erro na linha: %d -- Uso incorreto de diretivas (Erro Semântico)\n", linha);
         break;    
     default:
         printf("Erro na linha: %d -- Tipo de erro não reconhecido\n", linha);
         break;
     }
 
+    return true;
 }
 
 /**
@@ -69,6 +79,8 @@ int verificaOpcode(string token){
 int tamanhoDaInstrucao(string instrucao){
     if (instrucao == "COPY"){
         return 3;
+    } else if (instrucao == "STOP") {
+        return 1;
     } else {
         return 2;
     }
