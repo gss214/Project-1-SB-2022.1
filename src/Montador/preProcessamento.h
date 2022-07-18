@@ -30,9 +30,10 @@ vector<vector<string>> trataEntrada(string entrada){
                 linha.push_back(token);
             }
         }
-        if (ehLabelSo(linha) || linha.back()[linha.back().size()-1] == ':'){
+        if (linha.size() && (ehLabelSo(linha) || linha.back()[linha.back().size()-1] == ':')){
             continue;
-        } else if (linha.size()){
+        }
+        else if (linha.size()) {
             programaTratado.push_back(linha);
             linha.clear();
         }
