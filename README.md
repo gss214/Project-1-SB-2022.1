@@ -16,11 +16,11 @@
   A1: COPY N1, N4
   ```
 - [x] Pré-processar as diretivas EQU e IF
-- [ ] Testar com mais casos de testes
+- [x] Testar com mais casos de testes
 #### Tradução 
 - [x] Escolher o algoritmo: uma passagem ou duas passagens
-- [ ] Tratamento de erros:
-  - [ ] Verificar nomes de variáveis e rótulos (não podem começar com números ou ter caracteres especiais)
+- [x] Tratamento de erros:
+  - [x] Verificar nomes de variáveis e rótulos (não podem começar com números ou ter caracteres especiais)
   - [x] Declarações de rótulos ausentes
   - [x] Declarações ou rótulos repetidos
   - [x] Instruções com a quantidade de operando errado
@@ -32,7 +32,7 @@
   - [x] Criar funções auxiliares para ajudar no processo de tradução
   - [x] Aplicar o algoritmo de duas passagens
   - [x] Aceitar hexadecimal no const
-  - [ ] Gerar arquivo objeto com as tabelas de definições e uso
+  - [x] Gerar arquivo objeto com as tabelas de definições e uso
   - [ ] Tratar as diretivas BEGIN e END
 ### Ligador
 

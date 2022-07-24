@@ -29,7 +29,7 @@ bool tratamentoErro(int tipo, int linha=0){
         printf("Seção de Texto não definida (Erro Semântico)\n");
         break;
     case 5:
-        printf("Erro na linha: %d -- Intrução ou diretiva na seção errada (Erro Semântico)\n", linha);
+        printf("Erro na linha: %d -- Instrução ou diretiva na seção errada (Erro Semântico)\n", linha);
         break;
     case 6:
         printf("Erro na linha: %d -- Instruções com a quantidade de operandos errados (Erro Sintático)\n", linha);
@@ -39,7 +39,10 @@ bool tratamentoErro(int tipo, int linha=0){
         break;
     case 8:
         printf("Erro na linha: %d -- Uso incorreto de diretivas (Erro Semântico)\n", linha);
-        break;    
+        break;  
+    case 9:
+        printf("Erro na linha: %d -- Token Inválido (Erro Léxico)\n", linha);
+        break;
     default:
         printf("Erro na linha: %d -- Tipo de erro não reconhecido\n", linha);
         break;
@@ -197,6 +200,9 @@ vector<vector<string>> lerArquivo(string caminho){
         string token;
         while (getline(iss, token, ' ')){
             token = token.c_str();
+            if (token[token.size()-1] == ','){
+                token = cortaUltimoCaractere(token);
+            }
             linha.push_back(token);
         }
         programa.push_back(linha);

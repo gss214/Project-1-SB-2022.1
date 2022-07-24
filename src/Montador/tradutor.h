@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 #include <fstream>
+#include <regex> 
 
 #define NENHUMA 0
 #define TEXTO 1
@@ -13,7 +14,6 @@ map<string, int> tabela_de_definicoes;
 vector< pair<string,int> > tabela_de_uso;
 bool flag_erro = false;
 
-// verificar nomes de variáveis e rótulos (não podem começar com números ou ter caracteres especiais)
 bool primeiraPassagem(vector<vector<string>> &programa){
 
     int contador_posicao = 0;
@@ -24,7 +24,8 @@ bool primeiraPassagem(vector<vector<string>> &programa){
     for (unsigned int i = 0; i < programa.size(); i++, contador_linha++){
 
         string token = programa[i][0];
-
+        int pos = 0;
+        
         if (token == "SECAO"){
             if (programa[i][1] == "TEXTO"){
                 secao_texto = true;
@@ -42,17 +43,19 @@ bool primeiraPassagem(vector<vector<string>> &programa){
                 flag_erro = tratamentoErro(1, contador_linha);
             }
             else{
-                // tirando os dois pontos do token
-                tabela_de_simbolos[cortaUltimoCaractere(token)] = {contador_posicao, 'n'};                
+                token = cortaUltimoCaractere(token);
+                if (!regex_match(token, regex("^[a-zA-Z_$][a-zA-z_$0-9]*$"))){
+                    flag_erro = tratamentoErro(9,contador_linha);               
+                } 
+                tabela_de_simbolos[token] = {contador_posicao, 'n'}; 
             }
 
-            int next = 1;
-            token = programa[i][next];
+            token = programa[i][++pos];
 
             // tratamento de varios rotulos na mesma linha
             if (ehLabel(token)){
                 flag_erro = tratamentoErro(3, contador_linha);
-                token = programa[i][++next];
+                token = programa[i][++pos];
             }
         }
 
@@ -62,7 +65,23 @@ bool primeiraPassagem(vector<vector<string>> &programa){
         }
 
         else if (verificaDiretivas(token)){
-            if (secao_atual != DADOS) flag_erro = tratamentoErro(5, contador_linha);
+
+            if (token == "EXTERN"){
+                if (secao_atual != NENHUMA) flag_erro = tratamentoErro(5, contador_linha);
+                
+                string label = cortaUltimoCaractere(programa[i][pos-1]);
+                tabela_de_simbolos[label] = {contador_posicao, 's'};
+            }
+            else {
+                if (token == "BEGIN" || token == "PUBLIC"){
+                    if (secao_atual != NENHUMA) flag_erro = tratamentoErro(5, contador_linha);
+                    continue;
+                }
+                else{
+                    if (secao_atual != DADOS) flag_erro = tratamentoErro(5, contador_linha);
+                }
+            }
+
             contador_posicao += tamanhoDaDiretiva(token);
         }
 
@@ -100,8 +119,9 @@ bool segundaPassagem(vector<vector<string>> &programa, string saida){
             }
             else{
                 codigo_objeto.push_back(verificaOpcode(token));
+                contador_posicao++;
+
                 for(unsigned int j=pos+1; j<programa[i].size(); j++){
-                    contador_posicao++;
                     string label = programa[i][j];
                     
                     if (!tabela_de_simbolos.count(label)){
@@ -119,38 +139,24 @@ bool segundaPassagem(vector<vector<string>> &programa, string saida){
                             codigo_objeto.push_back(endereco);
                         }
                     }
+
+                    contador_posicao++;
                 }
             }
         }
 
-        // BEGIN E END - ver depois
         else if (verificaDiretivas(token)){
-
-            if(token == "EXTERN"){
-                if (pos == 0) flag_erro = tratamentoErro(8,contador_linha);
-                else{
-                    string label = cortaUltimoCaractere(programa[i][pos-1]);
-                    tabela_de_simbolos[label] = {contador_posicao, 's'};
+            if (token == "PUBLIC"){
+                string label = programa[i][pos+1];
+                if (!tabela_de_simbolos.count(programa[i][pos+1])){
+                    flag_erro = tratamentoErro(7,contador_linha);
+                }
+                else{ 
+                    auto endereco = tabela_de_simbolos[programa[i][pos+1]].first;
+                    tabela_de_definicoes[label] = endereco;
                 }
             }
-            else if(token == "PUBLIC"){
-                int linha = programa[i].size() - i;
-
-                if (linha != 2){
-                    flag_erro = tratamentoErro(6,contador_linha);
-                }
-                else{
-                    string label = programa[i][pos+1];
-                    if (!tabela_de_simbolos.count(programa[i][pos+1])){
-                        flag_erro = tratamentoErro(7,contador_linha);
-                    }
-                    else{
-                        auto endereco = tabela_de_simbolos[programa[i][pos+1]].first;
-                        tabela_de_definicoes[label] = endereco;
-                    }
-                }
-            } 
-            else if (token == "SPACE"){
+            if (token == "SPACE"){
                 codigo_objeto.push_back(0);
             }
             else if (token == "CONST"){
@@ -174,13 +180,24 @@ bool segundaPassagem(vector<vector<string>> &programa, string saida){
             arquivo_de_saida.close();
             return false;
         }
+        if (programa[0][1] == "BEGIN"){
+            arquivo_de_saida << "TABELA USO\n";
+            for (unsigned int i = 0; i < tabela_de_uso.size(); i++){
+                arquivo_de_saida << tabela_de_uso[i].first << " " << tabela_de_uso[i].second << "\n";
+            }
+            arquivo_de_saida << "\nTABELA DEF\n";
+            for (auto [key,value] : tabela_de_definicoes){
+                arquivo_de_saida << key << " " << value << "\n";
+            }
+            arquivo_de_saida << "\n";
+
+        }
         for (unsigned int i = 0; i < codigo_objeto.size(); i++){
             arquivo_de_saida << codigo_objeto[i] << " ";
         }
         arquivo_de_saida.close();
-    }
-    // 12 29 10 29 4 28 11 30 3 28 11 31 10 29 2 31 11 31 13 31 9 30 29 10 29 7 4 14 2 0 0 0 
-    // 12 29 10 29 4 28 11 30 3 28 11 31 10 29 2 31 11 31 13 31 9 30 29 10 29 7 4 14 2 0 0 0  
+    
+    }  
     return true;
 }
 
