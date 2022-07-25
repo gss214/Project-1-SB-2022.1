@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 #include <fstream>
 
-#include "funcoesAuxiliares.h"
+#include "funcoesAuxiliaresMontador.h"
 #include "preProcessamento.h"
 #include "tradutor.h"
 

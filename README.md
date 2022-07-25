@@ -28,12 +28,12 @@
   - [x] Dois rótulos na mesma linha
   - [x] Instruções ou diretivas nas seções erradas
   - [x] Falta de seção de texto
-- [ ] Traduzir e gerar o código objeto
+- [x] Traduzir e gerar o código objeto
   - [x] Criar funções auxiliares para ajudar no processo de tradução
   - [x] Aplicar o algoritmo de duas passagens
   - [x] Aceitar hexadecimal no const
   - [x] Gerar arquivo objeto com as tabelas de definições e uso
-  - [ ] Tratar as diretivas BEGIN e END
+  - [x] Tratar as diretivas BEGIN e END
 ### Ligador
 
 - [ ] Alinhar os códigos (o primeiro código objeto a ser passado na linha de comando é a main)
