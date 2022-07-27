@@ -6,9 +6,9 @@
 using namespace std;
 
 int main(int argc, char *argv[]){    
-    string caminho_arq1 = "../../Arquivos de Testes/fat_mod_A.o";
-    string caminho_arq2 = "../../Arquivos de Testes/fat_mod_B.o";
-    string saida = "obj.o";
+    string caminho_arq1 = argv[1];
+    string caminho_arq2 = argv[2];
+    string saida = argv[3];
     
     ligador(caminho_arq1, caminho_arq2, saida);
 
