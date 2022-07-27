@@ -3,12 +3,13 @@
 
 using namespace std;
 
+map<int,int> opcodes = {{1, 1}, {2, 1}, {3, 1}, {4, 1}, {5, 1}, {6, 1}, {7, 1}, {8, 1}, {9, 2}, {10, 1}, {11, 1}, {12, 1}, {13, 1}, {14, 0}};
+
 struct tabelas{   
     map<string, int> tabela_de_definicoes;
     vector< pair<string,int> > tabela_de_uso;
     vector<int> codigo_objeto;
 };
-
 
 /**
     Concatena dois vetores de inteiros.
@@ -30,7 +31,7 @@ vector<int> alinhaCodigoObjeto(vector<int> codigo_objeto1, vector<int> codigo_ob
 */
 struct tabelas aplicaFatorCorrecao(struct tabelas tabela, int fator_de_correcao){
     
-    struct aux = tabela;
+    struct tabelas aux = tabela;
     
     for (auto [key,value] : aux.tabela_de_definicoes){
         aux.tabela_de_definicoes[key] = value + fator_de_correcao;
@@ -49,11 +50,11 @@ map<string, int> criaTabelaDefinicoesGlobal(map<string, int> tabela1, map<string
     map<string, int> tabela_definicoes;
 
     for (auto [key,value] : tabela1){
-        tabela_definicoes[key] = tabela1[value];
+        tabela_definicoes[key] = value;
     }
 
-    for (auto [key,value] : aux.tabela2){
-       tabela_definicoes[key] = tabela2[value];
+    for (auto [key,value] : tabela2){
+       tabela_definicoes[key] = value;
     }
 
     return tabela_definicoes;
@@ -141,4 +142,13 @@ struct tabelas retornaTabelas(vector<vector<string>> arquivo){
     }
 
     return tabelas_arq;
+}
+
+/**
+    Verifica se um endereco eh um opcode e retorna o numeros de enderecos que a instrucao ocupa.
+    @param endereco um int correspondente ao endereco a ser verificado.
+    @return um inteiro correspondente ao numeros de enderecos que a instrucao ocupa ou -1 se nao eh uma instrucao.
+*/
+int verificaOpcode(int endereco){
+    return (opcodes.count(endereco) ? opcodes[endereco] : -1);
 }

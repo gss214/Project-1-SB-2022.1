@@ -2,13 +2,16 @@ SECAO TEXTO
 
         INPUT A
         INPUT B
-        COPY B, CONT
+        LOAD B
+        SUB UM
+        STORE CONT
         COPY A, RES
 LOOP:   LOAD RES ;10
         MULT A
         STORE RES
         LOAD CONT
         SUB UM
+        STORE CONT
         JMPZ FIM
         JMP LOOP
 FIM:    OUTPUT RES ;24

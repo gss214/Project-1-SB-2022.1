@@ -36,7 +36,8 @@
   - [x] Tratar as diretivas BEGIN e END
 ### Ligador
 
-- [ ] Alinhar os códigos (o primeiro código objeto a ser passado na linha de comando é a main)
-- [ ] Calcular o fator de erro 
-- [ ] Arrumar os labels seguindo o fator de erros
-- [ ] Gerar o código objeto ligado
+- [x] Alinhar os códigos (o primeiro código objeto a ser passado na linha de comando é a main)
+- [x] Calcular o fator de erro 
+- [x] Arrumar os labels seguindo o fator de erros
+- [x] Gerar o código objeto ligado
+- [ ] Arrumar problema caso CONST venha antes do SPACE na seção de dados
