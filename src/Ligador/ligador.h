@@ -7,7 +7,7 @@ map<string, int> tabela_de_definicoes_global;
 vector<int> codigo_objeto;
 vector<int> mapa_de_bits;
 
-bool ligador(string caminho_arq1, string caminho_arq2, string saida){
+bool ligador(string caminho_arq1, string caminho_arq2){
     
     auto arquivo1 = lerArquivo(caminho_arq1);
     auto arquivo2 = lerArquivo(caminho_arq2);
@@ -58,7 +58,7 @@ bool ligador(string caminho_arq1, string caminho_arq2, string saida){
     }
     
     ofstream arquivo_de_saida;
-    arquivo_de_saida.open(saida);
+    arquivo_de_saida.open("saida.obj");
     if (!arquivo_de_saida){
         cout << "erro: arquivo de saida não pode ser criado\n";
         arquivo_de_saida.close();
