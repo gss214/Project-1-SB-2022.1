@@ -10,7 +10,7 @@ Linguagem utilizada: C++.
 
 ## Descrição
 
-O trabalho consiste em implementar em C/C++ um método de tradução de uma linguagem demontagem simples para uma representação de código objeto. O tradutor a ser implementado será um Assembler da linguagem hipotética vista em sala de aula. Para mais detalhes, leia a [Especificação](https://github.com/gss214/Project-1-SB-2022.1/blob/main/Especifica%C3%A7%C3%A3o.pdf).
+O trabalho consiste em implementar em C/C++ um método de tradução de uma linguagem de montagem simples para uma representação de código objeto. O tradutor a ser implementado será um Assembler da linguagem hipotética visto em sala de aula. Para mais detalhes, leia a [Especificação](https://github.com/gss214/Project-1-SB-2022.1/blob/main/Especifica%C3%A7%C3%A3o.pdf).
 
 ## Especificação de compilação
 
@@ -44,7 +44,7 @@ Utilizamos Linux como Sistema Operacional. Para compilar o projeto, siga os segu
   
   - Caso o programa possua dois módulos, é preciso ligá-lo.
   - `g++ -std=c++17 -Wall -o ligador ligador.cpp`
-  - `./ligador moduloA.obj moduloB.obj saida.obj`
+  - `./ligador moduloA.obj moduloB.obj`
   - Certifique-se de estar na pasta do [Ligador](https://github.com/gss214/Project-1-SB-2022.1/tree/main/src/Ligador).
   
 </details> 
