@@ -8,19 +8,20 @@ map<int,int> opcodes = {{1, 1}, {2, 1}, {3, 1}, {4, 1}, {5, 1}, {6, 1}, {7, 1}, 
 struct tabelas{   
     map<string, int> tabela_de_definicoes;
     vector< pair<string,int> > tabela_de_uso;
+    vector<int> mapa_de_bits;
     vector<int> codigo_objeto;
 };
 
 /**
     Concatena dois vetores de inteiros.
-    @param codigo_objeto_1 um vetor de inteiros representando o codigo objeto do modulo A.
-    @param codigo_objeto_2 um vetor de inteiros representando o codigo objeto do modulo B.
-    @return um vetor de inteiros representando os codigos objetos A e B alinhados.
+    @param vetor1 um vetor de inteiros.
+    @param vetor2 um vetor de inteiros.
+    @return um vetor de inteiros representando os dois vetores concatenados.
 */
-vector<int> alinhaCodigoObjeto(vector<int> codigo_objeto1, vector<int> codigo_objeto2){
-    vector<int> codigo_objeto = codigo_objeto1;
-    codigo_objeto.insert(codigo_objeto.end(), codigo_objeto2.begin(),codigo_objeto2.end());
-    return codigo_objeto;
+vector<int> concatenaVetores(vector<int> vetor1, vector<int> vetor2){
+    vector<int> vetor_resultante = vetor1;
+    vetor_resultante.insert(vetor_resultante.end(), vetor2.begin(),vetor2.end());
+    return vetor_resultante;
 }
 
 /**
@@ -117,24 +118,30 @@ vector<vector<string>> lerArquivo(string caminho){
 struct tabelas retornaTabelas(vector<vector<string>> arquivo){
     
     struct tabelas tabelas_arq;
-    bool tab_uso = true, tab_def = false, cod_obj = false;
+    bool tab_uso = true, tab_def = false, info_relocacao = false, cod_obj = false;
 
     for(unsigned int i = 1; i < arquivo.size(); i++){
 
         if (arquivo[i][0] == "TABELA"){
             tab_def = true; tab_uso = false; continue;
         }
-        else if (isNumber(arquivo[i][0])){
-            cod_obj = true; tab_def = false;
+        else if (arquivo[i][0] == "MAPA"){
+            info_relocacao = true; tab_def = false; continue;
         }
 
-        if (tab_uso == true){
+        if (tab_uso){
             tabelas_arq.tabela_de_uso.push_back({arquivo[i][0], stoi(arquivo[i][1])});
         }
-        else if (tab_def == true){   
+        else if (tab_def){   
             tabelas_arq.tabela_de_definicoes[arquivo[i][0]] = stoi(arquivo[i][1]);          
         }
-        if (cod_obj == true){
+        else if (info_relocacao){
+            for (unsigned j = 0; j < arquivo[i].size(); j++){
+                tabelas_arq.mapa_de_bits.push_back(stoi(arquivo[i][j]));
+            }
+            cod_obj = true; info_relocacao = false; 
+        }
+        else if (cod_obj){
             for (unsigned j = 0; j < arquivo[i].size(); j++){
                 tabelas_arq.codigo_objeto.push_back(stoi(arquivo[i][j]));
             }

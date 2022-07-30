@@ -39,11 +39,11 @@ bool primeiraPassagem(vector<vector<string>> &programa){
         }
 
         if (ehLabel(token)){
+            token = cortaUltimoCaractere(token);
             if (tabela_de_simbolos.count(token)){
                 flag_erro = tratamentoErro(1, contador_linha);
             }
             else{
-                token = cortaUltimoCaractere(token);
                 if (!regex_match(token, regex("^[a-zA-Z_$][a-zA-z_$0-9]*$"))){
                     flag_erro = tratamentoErro(9,contador_linha);               
                 } 
@@ -99,6 +99,7 @@ bool segundaPassagem(vector<vector<string>> &programa, string saida){
     int contador_posicao = 0;
     int contador_linha = 1;
     vector<int> codigo_objeto;
+    vector<int> mapa_de_bits;
 
     for (unsigned int i = 0; i < programa.size(); i++, contador_linha++){
 
@@ -113,12 +114,13 @@ bool segundaPassagem(vector<vector<string>> &programa, string saida){
         }
 
         if (verificaOpcode(token)){
-            int linha = programa[i].size() - pos;
-            if (linha !=  tamanhoDaInstrucao(token)){
+            int tamanho_linha = programa[i].size() - pos;
+            if (tamanho_linha !=  tamanhoDaInstrucao(token)){
                 flag_erro = tratamentoErro(6,contador_linha);
             }
             else{
                 codigo_objeto.push_back(verificaOpcode(token));
+                mapa_de_bits.push_back(0);
                 contador_posicao++;
 
                 for(unsigned int j=pos+1; j<programa[i].size(); j++){
@@ -134,9 +136,11 @@ bool segundaPassagem(vector<vector<string>> &programa, string saida){
                         if(externo == 's'){
                             tabela_de_uso.push_back({label,contador_posicao}); 
                             codigo_objeto.push_back(0);
+                            mapa_de_bits.push_back(1);
                         }
                         else{
                             codigo_objeto.push_back(endereco);
+                            mapa_de_bits.push_back(1);
                         }
                     }
 
@@ -158,6 +162,7 @@ bool segundaPassagem(vector<vector<string>> &programa, string saida){
             }
             if (token == "SPACE"){
                 codigo_objeto.push_back(0);
+                mapa_de_bits.push_back(0);
             }
             else if (token == "CONST"){
                 string num = programa[i][pos+1];
@@ -165,6 +170,8 @@ bool segundaPassagem(vector<vector<string>> &programa, string saida){
                     codigo_objeto.push_back(hexToInt(num));
                 else
                     codigo_objeto.push_back(stoi(num));
+
+                mapa_de_bits.push_back(0);
             }
 
             contador_posicao += tamanhoDaDiretiva(token);
@@ -182,15 +189,18 @@ bool segundaPassagem(vector<vector<string>> &programa, string saida){
         }
         if (programa[0][1] == "BEGIN"){
             arquivo_de_saida << "TABELA USO\n";
-            for (unsigned int i = 0; i < tabela_de_uso.size(); i++){
-                arquivo_de_saida << tabela_de_uso[i].first << " " << tabela_de_uso[i].second << "\n";
+            for (auto x : tabela_de_uso){
+                arquivo_de_saida << x.first << " " << x.second << "\n";
             }
             arquivo_de_saida << "\nTABELA DEF\n";
             for (auto [key,value] : tabela_de_definicoes){
                 arquivo_de_saida << key << " " << value << "\n";
             }
-            arquivo_de_saida << "\n";
-
+            arquivo_de_saida << "\nMAPA DE BITS\n";
+            for (auto x : mapa_de_bits){
+                arquivo_de_saida << x << " "; 
+            }
+            arquivo_de_saida << "\n\n";
         }
         for (unsigned int i = 0; i < codigo_objeto.size(); i++){
             arquivo_de_saida << codigo_objeto[i] << " ";

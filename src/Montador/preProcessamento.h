@@ -61,7 +61,7 @@ bool preProcessamento(string entrada, string saida){
             string valor = programa[linha][2];
             tabelaEQU.insert({label, atoi(valor.c_str())});
             programa.erase(programa.begin() + linha);
-        } else if (token == "COPY"){
+        } else if (programa[linha].size() > 1 && token == "COPY"){
             programa[linha][1] = cortaUltimoCaractere(programa[linha][1]);
             linha++;
         } else if (token == "IF"){
