@@ -46,9 +46,8 @@ vector<vector<string>> trataEntrada(string entrada){
 
     @param entrada string contendo o path do arquivo de entrada.
     @param saida string representado o nome do arquivo de saida.
-    @return verdadeiro se o pre-processou com sucesso, falso se nao.
 */
-bool preProcessamento(string entrada, string saida){
+void preProcessamento(string entrada, string saida){
     vector<vector<string>> programa = trataEntrada(entrada);
     map<string,int> tabelaEQU;
     int linha = 0;
@@ -85,7 +84,7 @@ bool preProcessamento(string entrada, string saida){
     if (!arquivo_de_saida){
         cout << "erro: arquivo de saida não pode ser criado\n";
         arquivo_de_saida.close();
-        return false;
+        return;
     }
     for (unsigned int linha = 0; linha < programa.size(); linha++){
         for (unsigned int token = 0; token < programa[linha].size(); token++){
@@ -94,5 +93,4 @@ bool preProcessamento(string entrada, string saida){
         arquivo_de_saida << "\n";
     }
     arquivo_de_saida.close();
-    return true;
 }

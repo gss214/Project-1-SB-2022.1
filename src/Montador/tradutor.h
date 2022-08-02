@@ -14,7 +14,18 @@ map<string, int> tabela_de_definicoes;
 vector< pair<string,int> > tabela_de_uso;
 bool flag_erro = false;
 
-bool primeiraPassagem(vector<vector<string>> &programa){
+/**
+ *  Faz a primeira passagem do algoritmo de duas passagens. Montando a tabela de simbolos e verificando os seguintes erros:
+      1 - Símbolo redefinido
+      2 - Operação não identificada 
+      3 - Mais de um rótulo na mesma linha
+      4 - Seção de Texto não definida
+      5 - Instrução ou diretiva na seção errada
+      9 - Token Inválido
+
+    @param programa um vetor de strings correspondendo ao programa.
+*/
+void primeiraPassagem(vector<vector<string>> &programa){
 
     int contador_posicao = 0;
     int contador_linha = 1;
@@ -91,10 +102,17 @@ bool primeiraPassagem(vector<vector<string>> &programa){
     }
 
     if (!secao_texto) flag_erro = tratamentoErro(4);
-    return true;
 }
 
-bool segundaPassagem(vector<vector<string>> &programa, string saida){
+/**
+ *  Faz a segunda passagem do algoritmo de duas passagens. Montando o código objeto e verificando os seguintes erros:
+      6 - Instruções com a quantidade de operandos errados
+      7 - Declaração de rótulo ausente
+
+    @param programa um vetor de strings correspondendo ao programa.
+    @param saida uma string correspondendo ao nome do arquivo que vai ser escrito o codigo objeto.
+*/
+void segundaPassagem(vector<vector<string>> &programa, string saida){
 
     int contador_posicao = 0;
     int contador_linha = 1;
@@ -185,7 +203,7 @@ bool segundaPassagem(vector<vector<string>> &programa, string saida){
         if (!arquivo_de_saida){
             cout << "erro: arquivo de saida não pode ser criado\n";
             arquivo_de_saida.close();
-            return false;
+            return;
         }
         if (programa[0][1] == "BEGIN"){
             arquivo_de_saida << "TABELA USO\n";
@@ -206,15 +224,18 @@ bool segundaPassagem(vector<vector<string>> &programa, string saida){
             arquivo_de_saida << codigo_objeto[i] << " ";
         }
         arquivo_de_saida.close();
-    
     }  
-    return true;
 }
 
-bool algoritmoDuasPassagens(string entrada, string saida){
+
+/**
+ *  Faz o algoritmo de duas passagens. 
+
+    @param entrada uma strings correspondendo ao caminho do arquivo de entrada.
+    @param saida uma string correspondendo ao nome do arquivo que vai ser escrito o codigo objeto.
+*/
+void algoritmoDuasPassagens(string entrada, string saida){
     vector<vector<string>> programa = lerArquivo(entrada);
     primeiraPassagem(programa);
     segundaPassagem(programa, saida);
-    // exibePrograma(programa);
-    return true;
 }

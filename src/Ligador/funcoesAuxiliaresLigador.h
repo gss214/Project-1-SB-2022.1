@@ -13,18 +13,6 @@ struct tabelas{
 };
 
 /**
-    Concatena dois vetores de inteiros.
-    @param vetor1 um vetor de inteiros.
-    @param vetor2 um vetor de inteiros.
-    @return um vetor de inteiros representando os dois vetores concatenados.
-*/
-vector<int> concatenaVetores(vector<int> vetor1, vector<int> vetor2){
-    vector<int> vetor_resultante = vetor1;
-    vetor_resultante.insert(vetor_resultante.end(), vetor2.begin(),vetor2.end());
-    return vetor_resultante;
-}
-
-/**
     Aplica o fator de correcao arrumando os enderecos das tabelas de definicoes e de uso.
     @param tabela uma struct contendo as tabelas.
     @param fator_de_correcao o fator de correcao do modulo a ser aplicado.
@@ -44,6 +32,18 @@ struct tabelas aplicaFatorCorrecao(struct tabelas tabela, int fator_de_correcao)
 
     return aux;    
 
+}
+
+/**
+    Concatena dois vetores de inteiros.
+    @param vetor1 um vetor de inteiros.
+    @param vetor2 um vetor de inteiros.
+    @return um vetor de inteiros representando os dois vetores concatenados.
+*/
+vector<int> concatenaVetores(vector<int> vetor1, vector<int> vetor2){
+    vector<int> vetor_resultante = vetor1;
+    vetor_resultante.insert(vetor_resultante.end(), vetor2.begin(),vetor2.end());
+    return vetor_resultante;
 }
 
 map<string, int> criaTabelaDefinicoesGlobal(map<string, int> tabela1, map<string, int> tabela2){
@@ -109,9 +109,8 @@ vector<vector<string>> lerArquivo(string caminho){
     return programa;
 }
 
-
 /**
-    Retorna as tabelas de definicoes, uso e o codigo objeto do arquivo lido
+    Retorna a tabela de definicoes, a tabela de uso, o mapa de bits e o codigo objeto do arquivo lido
     @param arquivo uma matriz de strings representando o arquivo.
     @return uma struct com as tabelas e o codigo objeto.
 */

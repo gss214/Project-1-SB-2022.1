@@ -8,11 +8,11 @@
 using namespace std;
 
 int main(int argc, char *argv[]){
-    string argv1 = argv[1];
+    string flag = argv[1];
     string entrada = argv[2];
     string saida = argv[3];
     
-    if (argv1 == "-p"){
+    if (flag == "-p"){
         preProcessamento(entrada, saida);
     } else{
         algoritmoDuasPassagens(entrada, saida);

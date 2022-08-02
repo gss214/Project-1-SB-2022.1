@@ -8,9 +8,136 @@ map<string,int> opcodes = {{"ADD", 1}, {"SUB", 2}, {"MULT", 3}, {"DIV", 4}, {"JM
 vector<string> diretivas = {"BEGIN", "CONST", "END", "EQU", "EXTERN", "IF", "PUBLIC", "SPACE"};
 
 /**
-    Retorna se um token eh uma diretiva valida ou nao.
-    @param token uma string correspondente ao token a ser verificado.
-    @return verdadeiro se eh uma diretiva valida, falso se nao.
+    Corta o ultimo caractere de uma string.
+
+    @param token uma string correspondente ao token. 
+    @return a string de entrada com o ultimo caractere cortado.
+*/
+string cortaUltimoCaractere(string token){
+    return token.substr(0, token.size()-1);
+}
+
+/**
+    Verifica se um token eh uma label.
+
+    @param token uma string correspondente ao token.
+    @return verdadeiro se eh uma label, falso se nao.
+*/
+bool ehLabel(string token){
+    return token[token.size()-1] == ':';
+}
+
+/**
+    Verifica se uma linha tem so uma declaracao de uma label.
+    Ex:
+        L1:
+        ADD DOIS
+
+    @param linha um vetor de strings.
+    @return verdadeiro se tem uma label declarada, falso se nao.
+*/
+bool ehLabelSo(vector<string> linha){
+    return linha.size() == 1 && linha[0][linha[0].length()-1] == ':';
+}
+
+
+/**
+    Exibe na tela uma matriz.
+    @param programa uma matriz de string.
+*/
+void exibePrograma(vector<vector<string>> programa){
+    for (auto i: programa){
+        for(auto j: i){
+            printf("%s ", j.c_str());
+        }
+        printf("\n");
+    }
+}
+
+/**
+    Converte um numero em hexadecimal para inteiro.
+
+    @param hex uma string correspondente ao numero em hexa, e.g: 0xfffefffe.
+    @return o numero em hexa convertido para inteiro.
+*/
+int hexToInt(string hex){
+    return stoul(hex, nullptr, 16);
+}
+
+/**
+    Le um programa e retorna ele em uma matriz de strings. 
+
+    @param caminho string contendo o caminho do arquivo de entrada.
+    @return uma matriz de strings representando o programa.
+*/
+vector<vector<string>> lerArquivo(string caminho){
+    ifstream file(caminho);
+    string str;
+    vector<vector<string>> programa;
+    vector<string> linha;
+    while (getline(file, str)) {
+        istringstream iss(str);
+        string token;
+        while (getline(iss, token, ' ')){
+            token = token.c_str();
+            if (token[token.size()-1] == ','){
+                token = cortaUltimoCaractere(token);
+            }
+            linha.push_back(token);
+        }
+        programa.push_back(linha);
+        linha.clear();
+    }
+    return programa;
+}
+
+/**
+    Retorna o tamanho de uma diretiva.
+    @param diretiva uma string correspondente a diretiva.
+    @return um inteiro
+*/
+int tamanhoDaDiretiva(string diretiva){
+    if (diretiva == "SPACE" || diretiva == "CONST"){
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+
+/**
+    Retorna o tamanho de uma instrucao.
+    @param instrucao uma string correspondente a instrucao.
+    @return um inteiro
+*/
+int tamanhoDaInstrucao(string instrucao){
+    if (instrucao == "COPY"){
+        return 3;
+    } else if (instrucao == "STOP") {
+        return 1;
+    } else {
+        return 2;
+    }
+}
+
+/**
+    Transforma os caracteres de uma string para maiusculo.
+    @param s uma string.
+    @return uma string com seus caracteres em maisculo.
+*/
+string transformaMaisculo(string s){
+    for(unsigned int i = 0; i < s.length(); i++){
+        s[i] = toupper(s[i]);
+    }
+    return s;
+}
+
+
+/**
+    Exibe o erro indicando se eh semantico, sintatico ou lexico.
+    @param tipo um inteiro correspondente ao tipo do erro.
+    @param linha um inteiro correspondente ao numero da linha em que o erro ocorreu.
+    @return verdadeiro.
 */
 bool tratamentoErro(int tipo, int linha=0){
     
@@ -47,7 +174,6 @@ bool tratamentoErro(int tipo, int linha=0){
         printf("Erro na linha: %d -- Tipo de erro não reconhecido\n", linha);
         break;
     }
-
     return true;
 }
 
@@ -75,37 +201,9 @@ int verificaOpcode(string token){
 }
 
 /**
-    Retorna o tamanho de uma instrucao.
-    @param instrucao uma string correspondente a instrucao.
-    @return um inteiro
-*/
-int tamanhoDaInstrucao(string instrucao){
-    if (instrucao == "COPY"){
-        return 3;
-    } else if (instrucao == "STOP") {
-        return 1;
-    } else {
-        return 2;
-    }
-}
-
-/**
-    Retorna o tamanho de uma diretiva.
-    @param diretiva uma string correspondente a diretiva.
-    @return um inteiro
-*/
-int tamanhoDaDiretiva(string diretiva){
-    if (diretiva == "SPACE" || diretiva == "CONST"){
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
-/**
     Retorna o numero de operandos de uma instrucao.
     @param instrucao uma string correspondente a instrucao.
-    @return um inteiro
+    @return um inteiro correspondente ao numero de operandos da instrucao.
 */
 int verificaOperando(string instrucao){
     if (instrucao == "COPY"){
@@ -115,98 +213,4 @@ int verificaOperando(string instrucao){
     } else {
         return 1;
     }
-}
-
-/**
-    Exibe na tela uma matriz.
-    @param programa uma matriz de string.
-*/
-void exibePrograma(vector<vector<string>> programa){
-    for (auto i: programa){
-        for(auto j: i){
-            printf("%s ", j.c_str());
-        }
-        printf("\n");
-    }
-}
-
-/**
-    Transforma os caracteres de uma string para maiusculo.
-    @param s uma string.
-    @return uma string com seus caracteres em maisculo.
-*/
-string transformaMaisculo(string s){
-    for(unsigned int i = 0; i < s.length(); i++){
-        s[i] = toupper(s[i]);
-    }
-    return s;
-}
-
-/**
-    Verifica se uma linha eh so uma declaracao de uma label.
-
-    @param linha um vetor de strings.
-    @return verdadeiro se tem uma label declarada, falso se nao.
-*/
-bool ehLabelSo(vector<string> linha){
-    return linha.size() == 1 && linha[0][linha[0].length()-1] == ':';
-}
-
-/**
-    Converte um numero em hexa para inteiro.
-
-    @param hex uma string correspondente ao numero em hexa, e.g: 0xfffefffe.
-    @return o numero em hexa convertido para inteiro.
-*/
-int hexToInt(string hex){
-    return stoul(hex, nullptr, 16);
-}
-
-
-/**
-    Corta o ultimo caractere de uma string.
-
-    @param token uma string correspondente ao token. 
-    @return a string de entrada com o ultimo caractere cortado.
-*/
-string cortaUltimoCaractere(string token){
-    return token.substr(0, token.size()-1);
-}
-
-
-/**
-    Verifica se um token eh uma label.
-
-    @param token uma string correspondente ao token.
-    @return verdadeiro se eh uma label, falso se nao.
-*/
-bool ehLabel(string token){
-    return token[token.size()-1] == ':';
-}
-
-/**
-    Le um programa e retorna ele em uma matriz de strings.
-
-    @param caminho string contendo o caminho do arquivo de entrada.
-    @return uma matriz de strings representando o programa.
-*/
-vector<vector<string>> lerArquivo(string caminho){
-    ifstream file(caminho);
-    string str;
-    vector<vector<string>> programa;
-    vector<string> linha;
-    while (getline(file, str)) {
-        istringstream iss(str);
-        string token;
-        while (getline(iss, token, ' ')){
-            token = token.c_str();
-            if (token[token.size()-1] == ','){
-                token = cortaUltimoCaractere(token);
-            }
-            linha.push_back(token);
-        }
-        programa.push_back(linha);
-        linha.clear();
-    }
-    return programa;
 }
