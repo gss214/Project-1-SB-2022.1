@@ -184,7 +184,7 @@ void segundaPassagem(vector<vector<string>> &programa, string saida){
             }
             else if (token == "CONST"){
                 string num = programa[i][pos+1];
-                if (num[0] == '0' && (num[1] == 'X' || num[1] == 'x'))
+                if ((num[0] == '0' || num[0] == '-') && (num[1] == 'X' || num[1] == 'x' || num[2] == 'X' || num[2] == 'x'))
                     codigo_objeto.push_back(hexToInt(num));
                 else
                     codigo_objeto.push_back(stoi(num));
